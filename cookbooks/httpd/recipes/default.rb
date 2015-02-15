@@ -6,9 +6,11 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-package 'httpd'
+package 'httpd' do
+	action :install
+end
 
-service 'httpd' do 
+service 'httpd' do
   action [:start, :enable]
 end
 
