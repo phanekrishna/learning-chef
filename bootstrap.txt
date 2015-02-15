@@ -1,0 +1,1 @@
+knife bootstrap ec2-52-1-47-77.compute-1.amazonaws.com -i ../.ssh/rhel65.pem -x ec2-user --sudo -N node2
