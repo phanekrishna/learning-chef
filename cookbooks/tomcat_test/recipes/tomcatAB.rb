@@ -30,33 +30,33 @@ group tcgroup do
 	not_if "grep #{tcgroup} /etc/group"
 end
 
-create_dirs.each do |path|
-	directory path do
-		owner "#{tcuser}"
-		group "#{tcgroup}"
-		recursive true
-		mode "0755"
-		action :create
-	end
-end
+# create_dirs.each do |path|
+# 	directory path do
+# 		owner "#{tcuser}"
+# 		group "#{tcgroup}"
+# 		recursive true
+# 		mode "0755"
+# 		action :create
+# 	end
+# end
 
-remote_file "#{software_dir}/tomcat.tar.gz" do
-	source "#{tcurl}"
-	owner "#{tcuser}"
-	group "#{tcgroup}"
-	mode "0644"
-	action :create
-	not_if {File.exists? ("#{software_dir}/tomcat.tar.gz")}
-end
+# remote_file "#{software_dir}/tomcat.tar.gz" do
+# 	source "#{tcurl}"
+# 	owner "#{tcuser}"
+# 	group "#{tcgroup}"
+# 	mode "0644"
+# 	action :create
+# 	not_if {File.exists? ("#{software_dir}/tomcat.tar.gz")}
+# end
 
-execute "untar" do
-	user "#{tcuser}"
-	group "#{tcgroup}"
-	cwd software_dir
-	command "tar -xzf *.tar.gz -C #{tomcat_path}"
-	action :run
-	not_if {File.exists? ("#{tomcat_path}/apache-tomcat-#{version}")}
-end
+# execute "untar" do
+# 	user "#{tcuser}"
+# 	group "#{tcgroup}"
+# 	cwd software_dir
+# 	command "tar -xzf *.tar.gz -C #{tomcat_path}"
+# 	action :run
+# 	not_if {File.exists? ("#{tomcat_path}/apache-tomcat-#{version}")}
+# end
 
 # %w [/opt/apps/tomcat/sideA
 # /opt/apps/tomcat/sideA/tomcatA-1
@@ -83,7 +83,7 @@ end
 
 for sides in ['A' , 'B'] do 
 	for instance in [1, 2, 3, 4] do
-		directory "#{tomcat_main}/#{sides}/tomcat-#{instance}" do
+		directory "#{tomcat_main}/#{sides}/tomcat#{sides}-#{instance}" do
 		owner "#{tcuser}"
 			group "#{tcgroup}"
 			recursive true
