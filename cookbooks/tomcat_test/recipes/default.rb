@@ -7,8 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 #tomcaturl = "http://apache.claz.org/tomcat/tomcat-7/v7.0.59/bin/apache-tomcat-7.0.59.tar.gz"
-tcuser = "tomcat"
-tcgroup = "tomcat"
+tcuser = node['tomcat_test']['user']
+tcgroup = node['tomcat_test']['group']
 
 user tcuser do 
 	action :create
@@ -33,6 +33,25 @@ create_dirs = node['tomcat_test']['dirs']
 		action :create
 	end
 end
+
+version = node['tomcat_test']['version']
+tcurl = "https://archive.apache.org/dist/tomcat/tomcat-7/v#{version}/bin/apache-tomcat-#{version}.tar.gz"
+
+remote_file "/opt/apps/tomcat#{version}/tomcat.tar.gz" do
+	source "#{tcurl}"
+	owner "#{tcuser}"
+	group "#{tcgroup}"
+	mode "0644"
+	action :create
+end
+
+
+
+
+
+
+
+
 
 
 
