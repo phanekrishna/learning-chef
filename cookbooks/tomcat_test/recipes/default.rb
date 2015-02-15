@@ -21,3 +21,18 @@ group tcgroup do
 	action :create
 	not_if "grep #{tcgroup} /etc/group"
 end
+
+create_dirs = node['tomcat_test']['dirs']
+
+ create_dirs.each do |path|
+	directory path do
+		owner "#{tcuser}"
+		group "#{tcgroup}"
+		recursive true
+		mode "0755"
+		action :create
+	end
+end
+
+
+
