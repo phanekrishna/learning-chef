@@ -1,5 +1,5 @@
 name             'httpd'
-maintainer       'YOUR_COMPANY_NAME'
+maintainer       'Phane'
 maintainer_email 'YOUR_EMAIL'
 license          'All rights reserved'
 description      'Installs/Configures httpd'
