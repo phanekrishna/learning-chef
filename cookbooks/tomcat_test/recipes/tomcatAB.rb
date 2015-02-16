@@ -45,7 +45,6 @@ for sides in ['A' , 'B'] do
 		end
 #		remote_file "#{tomcat_main}/#{sides}/tomcat#{sides}-#{instance}.tar.gz" do
 		remote_file "/tmp/tomcat#{version}.tar.gz" do
-
 			source "#{tcurl}"
 			owner "#{tcuser}"
 			group "#{tcgroup}"
