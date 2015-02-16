@@ -43,7 +43,6 @@ for sides in ['A' , 'B'] do
 			action :create
 			not_if {Dir.exists? ("#{tomcat_main}/#{sides}/tomcat#{sides}-#{instance}")}
 		end
-#		remote_file "#{tomcat_main}/#{sides}/tomcat#{sides}-#{instance}.tar.gz" do
 		remote_file "/tmp/tomcat#{version}.tar.gz" do
 			source "#{tcurl}"
 			owner "#{tcuser}"
