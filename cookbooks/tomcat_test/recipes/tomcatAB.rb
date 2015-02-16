@@ -55,7 +55,7 @@ for sides in ['A' , 'B'] do
 			user "#{tcuser}"
 			group "#{tcgroup}"
 			cwd "/tmp"
-			command "tar -xzf tomcat#{version}.zip -C #{tomcat_main}/#{sides}/tomcat#{sides}-#{instance}"
+			command "tar -xzf tomcat#{version}.tar.gz -C #{tomcat_main}/#{sides}/tomcat#{sides}-#{instance}"
 			action :run
 			not_if {File.exists? ("tomcat#{sides}-#{instance}")}
 		end
