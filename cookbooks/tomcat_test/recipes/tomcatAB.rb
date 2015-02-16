@@ -13,11 +13,13 @@ version = node['tomcat_test']['version']
 create_dirs = node['tomcat_test']['dirs']
 tcurl = "https://archive.apache.org/dist/tomcat/tomcat-7/v#{version}/bin/apache-tomcat-#{version}.tar.gz"
 tomcat_path = "/opt/apps/tomcat#{version}"
+tomcat_base = "/opt/apps/tomcat#{version}"
 software_dir = node['tomcat_test']['software_dir']
 #sides = node['tomcat_test']['sides']
 #instances = node['tomcat_test']['instances']
-tomcat_main = "/opt/apps/tomcat/"
+tomcat_main = "/opt/apps/tomcat"
 
+#creates user
 user tcuser do 
 	action :create
 	home "/home/#{tcuser}"
@@ -25,75 +27,42 @@ user tcuser do
 	not_if "grep #{tcuser} /etc/passwd"
 end
 
+#creates group
 group tcgroup do
 	action :create
 	not_if "grep #{tcgroup} /etc/group"
 end
-
-# create_dirs.each do |path|
-# 	directory path do
-# 		owner "#{tcuser}"
-# 		group "#{tcgroup}"
-# 		recursive true
-# 		mode "0755"
-# 		action :create
-# 	end
-# end
-
-# remote_file "#{software_dir}/tomcat.tar.gz" do
-# 	source "#{tcurl}"
-# 	owner "#{tcuser}"
-# 	group "#{tcgroup}"
-# 	mode "0644"
-# 	action :create
-# 	not_if {File.exists? ("#{software_dir}/tomcat.tar.gz")}
-# end
-
-# execute "untar" do
-# 	user "#{tcuser}"
-# 	group "#{tcgroup}"
-# 	cwd software_dir
-# 	command "tar -xzf *.tar.gz -C #{tomcat_path}"
-# 	action :run
-# 	not_if {File.exists? ("#{tomcat_path}/apache-tomcat-#{version}")}
-# end
-
-# %w [/opt/apps/tomcat/sideA
-# /opt/apps/tomcat/sideA/tomcatA-1
-# /opt/apps/tomcat/sideA/tomcatA-2
-# /opt/apps/tomcat/sideA/tomcatA-3
-# /opt/apps/tomcat/sideA/tomcatA-3
-
-# /opt/apps/tomcat/sideB
-# /opt/apps/tomcat/sideA/tomcatB-1
-# /opt/apps/tomcat/sideA/tomcatB-2
-# /opt/apps/tomcat/sideA/tomcatB-3
-# /opt/apps/tomcat/sideA/tomcatB-4
-# ].each do |path|
-# 	directory path do
-# 			owner "#{tcuser}"
-# 			group "#{tcgroup}"
-# 			recursive true
-# 			mode "0755"
-# 			action :create
-# 		end
-# end
-
-##### SIDE A ######
-
+#creates A and B sides
 for sides in ['A' , 'B'] do 
 	for instance in [1, 2, 3, 4] do
 		directory "#{tomcat_main}/#{sides}/tomcat#{sides}-#{instance}" do
-		owner "#{tcuser}"
+			owner "#{tcuser}"
 			group "#{tcgroup}"
 			recursive true
 			mode "0755"
 			action :create
+			not_if {Dir.exists? ("#{tomcat_main}/#{sides}/tomcat#{sides}-#{instance}")}
 		end
-	end
-end
-	
+#		remote_file "#{tomcat_main}/#{sides}/tomcat#{sides}-#{instance}.tar.gz" do
+		remote_file "/tmp/tomcat#{version}.tar.gz" do
 
+			source "#{tcurl}"
+			owner "#{tcuser}"
+			group "#{tcgroup}"
+			mode "0644"
+			action :create
+			not_if {File.exists? ("#{tomcat_main}/#{sides}/tomcat#{sides}-#{instance}.tar.gz")}
+		end
+		execute "untar" do
+			user "#{tcuser}"
+			group "#{tcgroup}"
+			cwd "/tmp"
+			command "tar -xzf tomcat#{version}.zip -C #{tomcat_main}/#{sides}/tomcat#{sides}-#{instance}"
+			action :run
+			not_if {File.exists? ("tomcat#{sides}-#{instance}")}
+		end
+	end	
+end	
 
 
 

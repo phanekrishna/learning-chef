@@ -14,14 +14,14 @@ tcurl = "https://archive.apache.org/dist/tomcat/tomcat-7/v#{version}/bin/apache-
 tomcat_path = "/opt/apps/tomcat#{version}"
 software_dir = node['tomcat_test']['software_dir']
 
-
+#create user
 user tcuser do 
 	action :create
 	home "/home/#{tcuser}"
 	shell "/bin/bash"
 	not_if "grep #{tcuser} /etc/passwd"
 end
-
+#create group
 group tcgroup do
 	action :create
 	not_if "grep #{tcgroup} /etc/group"
